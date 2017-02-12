@@ -21,31 +21,21 @@ public class HelloWorldAnnotation {
 
     registry = new HashMap<String, GraphQLObjectType>();
 
-    GraphQLInterfaceType interfaceType = GraphQLInterfaceType.newInterface()
-        .name("MyInterface")
-        .typeResolver(new TypeResolver() {
-          @Override
-          public GraphQLObjectType getType(Object object) {
-            return registry.get(object.getClass().getSimpleName());
-          }
-        })
-        .build();
-
     GraphQLObjectType rootType = GraphQLAnnotations.object(RootObject.class);
 
-    GraphQLObjectType objectType3 = GraphQLAnnotations.object(MyObject2.class);
+    GraphQLObjectType objectType2 = GraphQLAnnotations.object(MyObject2.class);
 
-    registry.put("MyObject2", objectType3);
+    registry.put("MyObject2", objectType2);
 
-    GraphQLObjectType objectType2 = GraphQLAnnotations.object(MyObject.class);
+    GraphQLObjectType objectType = GraphQLAnnotations.object(MyObject.class);
 
-    registry.put("MyObject", objectType2);
+    registry.put("MyObject", objectType);
 
-    GraphQLSchema schema2 = GraphQLSchema.newSchema()
+    GraphQLSchema schema = GraphQLSchema.newSchema()
         .query(rootType)
-        .build(new HashSet(Arrays.asList(rootType, objectType2, objectType3)));
+        .build(new HashSet(Arrays.asList(rootType, objectType, objectType2)));
 
-    GraphQL graphQL2 = GraphQL.newGraphQL(schema2).build();
+    GraphQL graphQL2 = GraphQL.newGraphQL(schema).build();
 
     // fails due to complex issues in graphql-java-annotations
     Object result2 = graphQL2.execute("{items { ... on MyObject {a, my {b}} ... on MyObject2 {a, b}  }}", new RootObject());

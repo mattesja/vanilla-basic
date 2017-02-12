@@ -34,7 +34,7 @@ public class HelloWorldPlain {
                 .type(GraphQLList.list(interfaceType)))
         .build();
 
-    GraphQLObjectType objectType3 = newObject()
+    GraphQLObjectType objectType2 = newObject()
         .name("MyObject2")
         .field(
             newFieldDefinition()
@@ -46,9 +46,9 @@ public class HelloWorldPlain {
         .withInterface(interfaceType)
         .build();
 
-    registry.put("MyObject2", objectType3);
+    registry.put("MyObject2", objectType2);
 
-    GraphQLObjectType objectType2 = newObject()
+    GraphQLObjectType objectType = newObject()
         .name("MyObject")
         .field(
             newFieldDefinition()
@@ -59,17 +59,17 @@ public class HelloWorldPlain {
             .type(GraphQLString))
         .field(newFieldDefinition()
             .name("my")
-            .type(objectType3))
+            .type(objectType2))
         .withInterface(interfaceType)
         .build();
 
-    registry.put("MyObject", objectType2);
+    registry.put("MyObject", objectType);
 
-    GraphQLSchema schema2 = GraphQLSchema.newSchema()
+    GraphQLSchema schema = GraphQLSchema.newSchema()
         .query(rootType)
-        .build(new HashSet(Arrays.asList(rootType, objectType2, objectType3)));
+        .build(new HashSet(Arrays.asList(rootType, objectType, objectType2)));
 
-    GraphQL graphQL2 = GraphQL.newGraphQL(schema2).build();
+    GraphQL graphQL2 = GraphQL.newGraphQL(schema).build();
 
     Object result2 = graphQL2.execute("{items { ... on MyObject {a, my {b}} ... on MyObject2 {a, b}  }}", new RootObject());
     System.out.println(((ExecutionResultImpl) result2).getErrors());
