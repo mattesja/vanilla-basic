@@ -34,6 +34,8 @@ jobs:
       - name: Push changes
         run: |
           cd gitdemo
+          pwd
+          echo $GITHUB_TOKEN
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
