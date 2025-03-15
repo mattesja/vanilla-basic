@@ -19,7 +19,7 @@ jobs:
         with:
           repository: mattesja/gitdemo
           path: gitdemo
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       - name: Write a file
         run: echo "This is a new file" > gitdemo/new-file.txt
