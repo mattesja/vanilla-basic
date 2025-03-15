@@ -1,0 +1,39 @@
+name: Checkout, Write, Commit, and Push
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update_repo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout this repository
+        uses: actions/checkout@v3
+
+      - name: Checkout other repository
+        uses: actions/checkout@v3
+        with:
+          repository: mattesja/gitdemo
+          path: gitdemo
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Write a file
+        run: echo "This is a new file" > gitdemo/new-file.txt
+
+      - name: Commit changes
+        run: |
+          cd gitdemo
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add new-file.txt
+          git commit -m "Add new file"
+
+      - name: Push changes
+        run: |
+          cd gitdemo
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
