@@ -1,7 +1,15 @@
-# Vanilla JavaScript App
+tewat
 
-[Azure Static Web Apps](https://docs.microsoft.com/azure/static-web-apps/overview) allows you to easily build JavaScript apps in minutes. Use this repo with the [quickstart](https://docs.microsoft.com/azure/static-web-apps/getting-started?tabs=vanilla-javascript) to build and customize a new static site.
+* HelloWorldPlain uses plain graphql-java
+* HelloWorldAnnotation uses plain graphql-java-annotation
 
-This repo is used as a starter for a _very basic_ HTML web application using no front-end frameworks.
+Both are using the same dummy beans and the same query.
+Unfortunately graphql-java-annotation fails due to complex issues regarding the interface handling.
 
-This repo has a dev container. This means if you open it inside a [GitHub Codespace](https://github.com/features/codespaces), or using [VS Code with the remote containers extension](https://code.visualstudio.com/docs/remote/containers), it will be opened inside a container with all the dependencies already installed.
+I discovered these issues:
+
+* query with fragments fails ({items { ... on MyObject {a, my {b}} ... on MyObject2 {a, b}  }})
+  Error: PossibleFragmentSpreads.doTypesOverlap() returns false, because fragType + parentType reference to different interface instances.
+* List must not use Wildcard return types e.g. List<? extends MyInterface>
+* GraphQLAnnotations.getObjectBuilder() uses object.getInterfaces() which only returns direct interfaces of that class.
+  Here ClassUtils.getAllInterfaces etc. should be used http://stackoverflow.com/questions/6616055/get-all-derived-interfaces-of-a-class
