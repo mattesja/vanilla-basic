@@ -36,7 +36,7 @@ jobs:
         run: |
           cd gitdemo
           pwd
-          echo $GITHUB_TOKEN
+          echo $GITHUB_TOKEN | wc
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
